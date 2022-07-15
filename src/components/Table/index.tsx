@@ -1,40 +1,65 @@
 import { Group, Table as MantineTable } from "@mantine/core";
+import { ResponsiveCard } from "../ResponsiveCard";
+import { Line } from "./styles";
 
-type Rows = {
-  [key: string]: string | number | JSX.Element;
+type Row = {
+  id: string | number;
+  [key: string]: string | number | JSX.Element[];
 };
 
 type Props = {
-  rows: Rows[];
+  rows: Row[];
 };
 
 export const Table: React.FC<Props> = ({ rows }) => {
-  const lines = rows.map((element) => {
-    const rowValues = Object.values(element);
+  const lines = rows.map((line: Partial<Row>) => {
+    const { id } = line;
+    delete line.id;
+
+    const rowValues = Object.values(line);
     const row = rowValues.map((value) => {
-      console.log("  typeof value", typeof value);
+      if (typeof value === "object") {
+        return (
+          <td>
+            <ResponsiveCard elements={value} />
+          </td>
+        );
+      }
+
       return (
-        <td key={value.toString()}>
-          <Group>{value}</Group>
-        </td>
+        // eslint-disable-next-line react/jsx-key
+        <td>{value}</td>
       );
     });
 
-    return <tr key={"asd"}>{row}</tr>;
+    return <Line key={id}>{row}</Line>;
   });
 
   const rowHeaders = Object.keys(rows[0]);
   const headers = rowHeaders.map((value) => (
-    <th key={JSON.stringify(rowHeaders)}>{value}</th>
+    <th
+      key={value}
+      style={{
+        color: "white",
+      }}
+    >
+      {value}
+    </th>
   ));
 
   return (
-    <MantineTable>
+    <MantineTable color="red">
       <thead>
         <tr>{headers}</tr>
       </thead>
 
-      <tbody>{lines}</tbody>
+      <tbody
+        style={{
+          background: "var(--black-300)",
+        }}
+      >
+        {lines}
+      </tbody>
     </MantineTable>
   );
 };
