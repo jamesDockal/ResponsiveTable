@@ -1,9 +1,19 @@
+:root {
+  --pink-500: #d53f8c;
+
+  --black-800: #181b23;
+  --black-500: #1f2029;
+
+  --gray-500: #777a8d;
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-color: var(--black-800);
 }
 
 a {
